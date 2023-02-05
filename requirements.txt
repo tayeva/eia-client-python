@@ -1,0 +1,10 @@
+pandas
+pyarrow
+numpy
+pytest
+build
+black
+autopep8
+yapf
+flake8
+pylint
