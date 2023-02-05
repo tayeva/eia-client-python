@@ -1,6 +1,9 @@
 #eia-client-python
 *.parquet
 
+# editors
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
