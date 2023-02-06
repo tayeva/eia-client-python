@@ -3,6 +3,13 @@
 
 # editors
 .vscode/
+*~
+
+# OS generated
+.DS_Store
+ehthumbs.db
+Icon
+Thumbs.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -76,6 +83,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/build/
 
 # PyBuilder
 target/
