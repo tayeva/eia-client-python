@@ -14,9 +14,9 @@ LOGGER = logging.getLogger(__name__)
 def get(endpoint: ec.ApiEndpoint, **kwargs) -> requests.Response:
     """Get endpoint"""
     if kwargs.get("timeout") is None:
-        timeout = timeout.pop("timeout")
-    else:
         timeout = 60
+    else:
+        timeout = timeout.pop("timeout")
     return requests.get(endpoint.endpoint, timeout=timeout, **kwargs)
 
 
