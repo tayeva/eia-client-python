@@ -24,7 +24,7 @@ def test_get_api_key_from_env_exists():
 def test_get_default_config_file_path():
     """Test get defautl config file path."""
     os.environ["HOME"] = "test"
-    assert str(ec.api_key._get_default_config_file_path()) == "test/.eia.config"
+    assert str(ec.api_key.get_default_config_file_path()) == "test/.eia.config"
 
 
 def test_load_api_from_file():
@@ -34,7 +34,7 @@ def test_load_api_from_file():
         with open(test_config_fp, "w", encoding="utf-8") as file:
             true_api_key = "z8aTHIS1ndIS3rj1lAkfaTEST9asdfj"
             file.write(true_api_key)
-        api_key =  ec.api_key._load_api_from_file(test_config_fp)
+        api_key =  ec.api_key._load_api_key_from_file(test_config_fp)
         assert api_key == true_api_key
 
 

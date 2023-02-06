@@ -28,13 +28,13 @@ def _get_api_key_from_env() -> str:
     return api_key
 
 
-def _get_default_config_file_path() -> Path:
+def get_default_config_file_path() -> Path:
     """Get the default config file path."""
     home = Path().home()
     return home.joinpath(FILE_BASE_NAME)
 
 
-def _load_api_from_file(file_path : Path) -> str:
+def _load_api_key_from_file(file_path : Path) -> str:
     """Load api key from file (text file, utf-8)."""
     api_key = ""
     if file_path.exists():
@@ -65,10 +65,17 @@ def load_api_key(config_file_path: Path = None) -> ApiKey:
         LOGGER.info("Loaded api key from env.")
         return ApiKey(key=api_key)
     if config_file_path is None:
-        config_fp = _get_default_config_file_path()
+        config_fp = get_default_config_file_path()
     else:
         config_fp = config_file_path
-    api_key = _load_api_from_file(config_fp)
+    api_key = _load_api_key_from_file(config_fp)
     if not api_key:
         raise RuntimeError("No API key. Please configure... see docs..")
     return ApiKey(key=api_key)
+
+
+def write_api_key(file_path: Path, api_key : ApiKey) -> None:
+    """Write api key."""
+    with open(file_path, encoding="utf-8", mode="w") as file:
+        file.write(api_key.key)
+    LOGGER.info("Wrote api key to:%s", file_path)
