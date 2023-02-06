@@ -61,3 +61,13 @@ def cli() -> ArgumentParser:
     arg_parser.add_argument("command", choices=("config", "report"), help="Command to run.")
     arg_parser.add_argument("-k", "--api-key", default=None, help="Optional API key file path.")
     _process_args(arg_parser.parse_args())
+
+
+def main():
+    """Main entry point for EIA client"""
+    logging.basicConfig(level=logging.INFO)
+    cli()
+
+
+if __name__ == "__main__":
+    main()
