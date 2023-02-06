@@ -46,7 +46,13 @@ def _load_api_from_file(file_path : Path) -> str:
     return api_key
 
 
-def load_api_key(config_file_path: Path = None) -> str:
+@dataclass
+class ApiKey:
+    """API Key dataclass."""
+    key: str
+
+
+def load_api_key(config_file_path: Path = None) -> ApiKey:
     """
     Load the API key.
 
@@ -57,16 +63,12 @@ def load_api_key(config_file_path: Path = None) -> str:
     api_key = _get_api_key_from_env()
     if api_key:
         LOGGER.info("Loaded api key from env.")
-        return api_key
+        return ApiKey(key=api_key)
     if config_file_path is None:
         config_fp = _get_default_config_file_path()
     else:
         config_fp = config_file_path
     api_key = _load_api_from_file(config_fp)
-    return api_key
-
-
-@dataclass
-class ApiKey:
-    """API Key dataclass."""
-    api_key: str
+    if not api_key:
+        raise RuntimeError("No API key. Please configure... see docs..")
+    return ApiKey(key=api_key)
