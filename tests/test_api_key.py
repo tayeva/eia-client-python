@@ -36,3 +36,22 @@ def test_load_api_from_file():
             file.write(true_api_key)
         api_key =  ec.api_key._load_api_from_file(test_config_fp)
         assert api_key == true_api_key
+
+
+def test_load_api_key_key_in_env():
+    os.environ["EIA_API_KEY"] = TEST_API_KEY
+    api_key: ec.api_key.ApiKey = ec.api_key.load_api_key()
+    assert api_key.key == TEST_API_KEY
+
+
+def test_load_api_key_key_from_file():
+    """Test load api key from file."""
+    with TemporaryDirectory() as tmp_dir:
+        test_config_fp = Path(tmp_dir).joinpath(".eia.config")
+        with open(test_config_fp, "w", encoding="utf-8") as file:
+            true_api_key = "z8aTHIS1ndIS3rj1lAkfaTEST9asdfj"
+            file.write(true_api_key)
+        os.environ["HOME"] = tmp_dir
+        del os.environ["EIA_API_KEY"]
+        api_key: ec.api_key.ApiKey = ec.api_key.load_api_key()
+        assert api_key.key == true_api_key
