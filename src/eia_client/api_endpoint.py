@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 import logging
 
-from eia_client.api_key import ApiKey
+import eia_client.api_key as ak
 
 
 LOGGER = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def _clean_msn(msn: str):
     return msn.upper()
 
 
-def _join_api_key_and_query(api_key: ApiKey, query: str) -> str:
+def _join_api_key_and_query(api_key: ak.ApiKey, query: str) -> str:
     split = query.split("?")
     return f"{split[0]}?api_key={api_key.key}&{split[1]}"
 
@@ -44,8 +44,8 @@ class ApiEndpointBuilder:
 
     _BASE = "https://api.eia.gov/v2"
 
-    def __init__(self, api_key: ApiKey) -> None:
-        self._api_key = api_key
+    def __init__(self, api_key: ak.ApiKey = None) -> None:
+        self._api_key = ak.load() if api_key is None else api_key
 
     def _join(self, query: str) -> str:
         """Join query to base and version to create fully formed endpoint."""
@@ -54,6 +54,9 @@ class ApiEndpointBuilder:
     def total_energy_monthly(self, msn: str) -> ApiEndpoint:
         """
         Total energy monthly by msn.
+        
+        Use the EIA API browser to find an msn:
+        https://www.eia.gov/opendata/browser/total-energy
 
         :param msn: Mnemonic Series Names (MSN).
         :return: An ApiEndpoint dataclass.
