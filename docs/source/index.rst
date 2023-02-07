@@ -16,9 +16,9 @@ Otherwise, you can :ref:`build from source <build_source>`.
 
 Here are the :ref:`API docs <api_docs>`.
 
-The EIA API is a vast. This package is not comprehensive, feel free
-to submit an issue with a request or a pull request with changes if there
-is a feature you would like added.
+The EIA API is vast, and this package only covers a portion. 
+Feel free to submit an issue or a pull request with changes 
+if there is a feature you would like added.
 
 
 .. toctree::
