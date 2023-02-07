@@ -12,3 +12,6 @@ pyflakes
 mccabe
 pylint
 sphinx
+ipython
+jupyter
+matplotlib
