@@ -6,8 +6,8 @@ import logging
 from requests import Request
 import pandas as pd
 
-LOGGER = logging.getLogger(__name__)
 
+LOGGER = logging.getLogger(__name__)
 
 
 def as_dataframe(resp: Request) -> pd.DataFrame:
