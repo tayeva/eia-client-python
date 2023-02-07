@@ -1,35 +1,20 @@
-"""EIA Client"""
+"""EIA client module."""
 
-import logging
-
-import pandas as pd
 import requests
 
-import eia_client as ec
+from eia_client.api_endpoint import ApiEndpoint
 
 
-LOGGER = logging.getLogger(__name__)
-
-
-def get(endpoint: ec.ApiEndpoint, **kwargs) -> requests.Response:
-    """Get endpoint"""
+def get(endpoint: ApiEndpoint, **kwargs) -> requests.Response:
+    """
+    Issue a GET request to endpoint.
+    
+    :param api_endpoint: An ApiEndpoint dataclass.
+    :return: A requests response object.
+    :rtype: requests.Response
+    """
     if kwargs.get("timeout") is None:
         timeout = 60
     else:
         timeout = timeout.pop("timeout")
     return requests.get(endpoint.endpoint, timeout=timeout, **kwargs)
-
-
-def parse_as_dataframe(resp: requests.Response) -> pd.DataFrame:
-    """Get the endpoint as a dataframe."""
-    if resp.status_code == 200:
-        data = resp.json()
-        data_resp = data["response"]
-        resp_warning = data_resp.get("warning")
-        if resp_warning:
-            LOGGER.warning(resp_warning)
-        data_df = pd.DataFrame(data_resp["data"])
-    else:
-        data_df = pd.DataFrame()
-        LOGGER.warning("status:%s", resp.status_code)
-    return data_df

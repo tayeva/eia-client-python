@@ -4,10 +4,10 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 import logging
 
-from eia_client.api_endpoint import ApiEndpointBuilder
-from eia_client.api_key import (ApiKey, write_api_key, load_api_key,
-                                get_default_config_file_path)
-from eia_client import client
+import eia_client.api_endpoint as api_endpoint
+import eia_client.api_key as api_key
+import eia_client.client as client
+import eia_client.parse as parse
 
 
 LOGGER = logging.getLogger(__name__)
@@ -17,23 +17,23 @@ def _clean_command(command : str) -> str:
     return command.lower()
 
 
-def _config_command() -> ApiKey:
-    api_key = input("API Key:")
-    write_api_key(get_default_config_file_path(), ApiKey(api_key))
+def _config_command() -> api_key.ApiKey:
+    key = input("API Key:")
+    api_key.write(api_key.get_default_config_file_path(), api_key.ApiKey(key))
 
 
-def _report_command(api_key: ApiKey):
+def _report_command(key: api_key.ApiKey):
     report_to_run = input("Report (default: total_energy_monthly):")
     if not report_to_run:
         report_to_run = "total_energy_monthly"
     LOGGER.info("Running report:%s", report_to_run)
-    api_endpoint_builder = ApiEndpointBuilder(api_key)
+    api_endpoint_builder = api_endpoint.EndpointBuilder(key)
     if report_to_run == "total_energy_monthly":
         msn = input("msn (default: ELETPUS):")
         if not msn:
             msn = "ELETPUS"
         resp = client.get(api_endpoint_builder.total_energy_monthly(msn))
-        tem_df = client.parse_as_dataframe(resp)
+        tem_df = parse.as_dataframe(resp)
         if not tem_df.empty:
             output_directory = input("output directory (default='.')")
             if not output_directory or output_directory.endswith("/"):
@@ -49,7 +49,7 @@ def _process_args(args : ArgumentParser):
     command = _clean_command(args.command)
     if command == "config":
         _config_command()
-    api_key = load_api_key(config_file_path=args.api_key)
+    api_key = api_key.load(config_file_path=args.api_key)
     if command == "report":
         _report_command(api_key)
 

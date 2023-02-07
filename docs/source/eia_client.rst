@@ -36,10 +36,10 @@ eia\_client.client module
    :undoc-members:
    :show-inheritance:
 
-eia\_client.main module
------------------------
+eia\_client.parse module
+------------------------
 
-.. automodule:: eia_client.main
+.. automodule:: eia_client.parse
    :members:
    :undoc-members:
    :show-inheritance:
