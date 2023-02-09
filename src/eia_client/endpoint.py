@@ -16,7 +16,7 @@ class Endpoint:
     Use this data class to encapsulate an endpoint.
     Methods from EndpointBuilder return Endpoint classes.
     """
-    endpoint: str
+    value: str
 
 
 def _clean_msn(msn: str):
@@ -29,7 +29,7 @@ def _join_api_key_and_query(api_key: ak.ApiKey, query: str) -> str:
     return f"{split[0]}?api_key={api_key.key}&{split[1]}"
 
 
-class Builder:
+class EndpointBuilder:
     """
     A class for building EIA endpoints with API key.
     
