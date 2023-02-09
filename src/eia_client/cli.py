@@ -4,7 +4,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 import logging
 
-from eia_client.endpoint import Builder
+from eia_client.endpoint import EndpointBuilder
 import eia_client.api_key as ak
 from eia_client import client
 from eia_client import parse
@@ -27,7 +27,7 @@ def _report_command(key: ak.ApiKey):
     if not report_to_run:
         report_to_run = "total_energy_monthly"
     LOGGER.info("Running report:%s", report_to_run)
-    endpoint_builder = Builder(key)
+    endpoint_builder = EndpointBuilder(key)
     if report_to_run == "total_energy_monthly":
         msn = input("msn (default: ELETPUS):")
         if not msn:
