@@ -4,10 +4,10 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 import logging
 
-from eia_api_client.api_endpoint import ApiEndpointBuilder
-import eia_api_client.api_key as ak
-import eia_api_client.client as client
-import eia_api_client.parse as parse
+from eia_client.api_endpoint import ApiEndpointBuilder
+import eia_client.api_key as ak
+from eia_client import client
+from eia_client import parse
 
 
 LOGGER = logging.getLogger(__name__)
