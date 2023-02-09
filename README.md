@@ -52,4 +52,4 @@ Go to the [EIA Open Data API site](https://www.eia.gov/opendata/) and create, th
 The package assumes the API Key for EIA is stored in your home directory as `~/.eia.config` (text) or an environment
 variable called EIA_API_KEY.
 
-*Warning* Don't spam the API, there is nothing in the code to protect you from going over any rate limits; save the data and request as you need.
+*WARNING* Don't spam the API, there is nothing in the code to protect you from going over any rate limits; save the data and request as you need.
