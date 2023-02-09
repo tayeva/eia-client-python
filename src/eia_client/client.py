@@ -2,10 +2,10 @@
 
 import requests
 
-from eia_opendata.api_endpoint import ApiEndpoint
+from eia_client.endpoint import Endpoint
 
 
-def get(endpoint: ApiEndpoint, **kwargs) -> requests.Response:
+def get(endpoint: Endpoint, **kwargs) -> requests.Response:
     """
     Issue a GET request to endpoint.
     

@@ -10,7 +10,7 @@ LOGGER = logging.getLogger(__name__)
 
 
 @dataclass
-class ApiEndpoint:
+class Endpoint:
     """
     Api endpoint dataclass.
     Use this data class to encapsulate an endpoint.
@@ -29,7 +29,7 @@ def _join_api_key_and_query(api_key: ak.ApiKey, query: str) -> str:
     return f"{split[0]}?api_key={api_key.key}&{split[1]}"
 
 
-class ApiEndpointBuilder:
+class Builder:
     """
     A class for building EIA endpoints with API key.
     
@@ -51,7 +51,7 @@ class ApiEndpointBuilder:
         """Join query to base and version to create fully formed endpoint."""
         return f"{self._BASE}{_join_api_key_and_query(self._api_key, query)}"
 
-    def total_energy_monthly(self, msn: str) -> ApiEndpoint:
+    def total_energy_monthly(self, msn: str) -> Endpoint:
         """
         Total energy monthly by msn.
         
@@ -68,4 +68,4 @@ class ApiEndpointBuilder:
         endpoint = (f"/total-energy/data/?frequency=monthly&data[0]=value&"
             F"facets[msn][]={msn}&sort[0][column]=period&sort[0]"
             "[direction]=desc&offset=0&length=5000")
-        return ApiEndpoint(self._join(endpoint))
+        return Endpoint(self._join(endpoint))
