@@ -1,7 +1,6 @@
 """EIA API key related functions.
 
-The EIA API expects and API key requests. This module
-helps manage the api key.
+The EIA API expects an API key in requests.
 """
 
 
@@ -65,7 +64,12 @@ class ApiKey:
 
 
 def read_config_file(file_path : Path) -> str:
-    """Load api key from file (text file, utf-8)."""
+    """Load api key from file (text file, utf-8).
+    
+    :param file_path: The file path to the API key config file.
+    :return:  API key as string if file exits otherwise an empty string.
+    :rtype: str
+    """
     key = ""
     if file_path.exists():
         with open(file_path, encoding="utf-8") as file:
@@ -83,6 +87,12 @@ def load(config_file_path: Path = None) -> ApiKey:
     (1) Try from environment.
     (2) If not exists, try from .eia.config file in '~/` home directory or
         specified config_file_path.
+
+    :param config_file_path: The API key config file path (optional). If this
+     parameter is not provided the function tries the default location.
+
+    :return: The API key either loaded from env or file
+    :rtype: ApiKey
     """
     key = get_from_env()
     if key:
@@ -99,7 +109,11 @@ def load(config_file_path: Path = None) -> ApiKey:
 
 
 def write(file_path: Path, key : ApiKey) -> None:
-    """Write api key."""
+    """Write api key.
+    
+    :param file_path: The file path to write the API key.
+    :param key: The API key to write to file
+    """
     with open(file_path, encoding="utf-8", mode="w") as file:
         file.write(key.key)
     LOGGER.info("Wrote api key to:%s", file_path)
