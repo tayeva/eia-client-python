@@ -4,7 +4,7 @@ from tempfile import TemporaryDirectory
 from pathlib import Path
 import os
 
-import eia_client.api_key as api_key
+from eia_client import api_key
 
 
 TEST_API_KEY: str = "TEST_API_KEY"
@@ -39,6 +39,7 @@ def test_load_api_from_file():
 
 
 def test_load_api_key_key_in_env():
+    """"""
     os.environ["EIA_API_KEY"] = TEST_API_KEY
     key: api_key.ApiKey = api_key.load()
     assert key.key == TEST_API_KEY
