@@ -15,6 +15,7 @@ The MSN is "ELETPUS".
 ## Installation
 
 TODO: add installation section
+
 TODO: put package on pypi
 
 ## Example
