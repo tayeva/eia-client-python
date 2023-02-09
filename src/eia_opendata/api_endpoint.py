@@ -1,9 +1,9 @@
-"""A module for interacting with the EIA API."""
+"""A module for interacting with the EIA Open Data API."""
 
 from dataclasses import dataclass
 import logging
 
-import eia_client.api_key as ak
+import eia_api_client.api_key as ak
 
 
 LOGGER = logging.getLogger(__name__)

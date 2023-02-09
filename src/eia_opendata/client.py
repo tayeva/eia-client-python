@@ -2,7 +2,7 @@
 
 import requests
 
-from eia_client.api_endpoint import ApiEndpoint
+from eia_opendata.api_endpoint import ApiEndpoint
 
 
 def get(endpoint: ApiEndpoint, **kwargs) -> requests.Response:

@@ -1,4 +1,4 @@
-eia-client-python
+eia-opendata-python
 =================
 
-**eia_client** is a python client library for the EIA API.
+**eia_opendata** is a python library for the EIA Open Data API.
