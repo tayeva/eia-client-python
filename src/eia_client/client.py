@@ -17,4 +17,4 @@ def get(endpoint: Endpoint, **kwargs) -> requests.Response:
         timeout = 60
     else:
         timeout = timeout.pop("timeout")
-    return requests.get(endpoint.value, timeout=timeout, **kwargs)
+    return requests.get(endpoint.endpoint, timeout=timeout, **kwargs)

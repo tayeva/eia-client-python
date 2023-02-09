@@ -12,4 +12,4 @@ def test_api_endpoint_total_monthly_energy():
                      '&frequency=monthly&data[0]=value&facets[msn][]=TEST'
                      '&sort[0][column]=period&sort[0][direction]=desc'
                      '&offset=0&length=5000')
-    assert endpoint.value == true_endpoint
+    assert endpoint.endpoint == true_endpoint

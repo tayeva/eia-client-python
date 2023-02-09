@@ -16,7 +16,7 @@ class Endpoint:
     Use this data class to encapsulate an endpoint.
     Methods from EndpointBuilder return Endpoint classes.
     """
-    value: str
+    endpoint: str
 
 
 def _clean_msn(msn: str):
