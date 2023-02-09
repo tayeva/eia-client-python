@@ -1,4 +1,4 @@
-# eia-client-python
+# EIA Open Data API Python Client Package
 
 This is an unofficial http client python package for the [U.S. Energy Information Administration (EIA) Open Data API](https://www.eia.gov/opendata/). It has minimal functionality and is under development. Please use it at your own risk.
 
@@ -8,9 +8,9 @@ Mnemonic Series Names (MSN) - This is a unique identifier used by EIA for data s
 
 Example MSN:
 
-Aviation Gasoline CO2 Emissions in Million Metric Tons of Carbon Dioxide (AVTCEUS)
+Electricity Net Generation Total
 
-The MSN is "AVTCEUS".
+The MSN is "ELETPUS".
 
 ## Example
 
@@ -19,7 +19,15 @@ The MSN is "AVTCEUS".
 
 import eia_client as ec
 
+builder = ec.EndpointBuilder()
 
+endpoint = builder.total_energy_monthly(msn="ELETPUS")
+
+resp = ec.client.get(endpoint)
+
+df = ec.parse.as_dataframe(resp)
+
+print(df.head())
 
 ```
 
