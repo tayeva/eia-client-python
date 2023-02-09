@@ -12,8 +12,16 @@ Electricity Net Generation Total
 
 The MSN is "ELETPUS".
 
+## Installation
+
+TODO: add installation section
+TODO: put package on pypi
+
 ## Example
 
+Below is a quick example showing how to submit a request to the
+"total energy monthly" API endpoint for electricity net generation total
+endpoint.
 
 ``` python
 
@@ -33,6 +41,8 @@ print(df.head())
 df.to_parquet("eia_data.parquet")
 
 ```
+
+You can view an extended version of this example in `examples/Quickstart_tminTutorial.ipynb`.
 
 
 ## API Key
