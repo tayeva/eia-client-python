@@ -1,6 +1,6 @@
 # eia-client-python
 
-This is an unofficial python package client package for the [U.S. Energy Information Administration (EIA) Open Data API](https://www.eia.gov/opendata/). It has minimal functionality and is under development. Please use it at your own risk.
+This is an unofficial http client python package for the [U.S. Energy Information Administration (EIA) Open Data API](https://www.eia.gov/opendata/). It has minimal functionality and is under development. Please use it at your own risk.
 
 The API is vast and the quickest way to get started is to use the [online browser](https://www.eia.gov/opendata/browser/) to select the API route you would like to query.
 
