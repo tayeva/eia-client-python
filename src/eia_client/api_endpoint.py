@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 import logging
 
-import eia_api_client.api_key as ak
+import eia_client.api_key as ak
 
 
 LOGGER = logging.getLogger(__name__)
