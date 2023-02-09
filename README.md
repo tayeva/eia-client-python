@@ -1,7 +1,5 @@
 # eia-client-python
 
-# TODO clean up the README
-
 API Route Browser
 
 https://www.eia.gov/opendata/browser/
