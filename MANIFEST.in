@@ -1,3 +1,1 @@
-include src/eia_client/VERSION
-global-include *.py
-global-exlcude *.parquet
+global-exclude *.parquet
