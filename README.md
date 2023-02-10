@@ -58,3 +58,16 @@ The package assumes the API Key for EIA is stored in your home directory as `~/.
 variable called EIA_API_KEY.
 
 *WARNING* Don't spam the API, there is nothing in the code to protect you from going over any rate limits; save the data and request as you need.
+
+
+## Feature pipeline
+
+- Endpoint query functionality to allow the user to discover endpoints.
+
+- A proper client with session manager.
+
+- Walking endpoints without breaching rate limits.
+
+- Update EndpointBuilder to make requests with information in headers instead of full-endpoint (too long for some use cases).
+
+- Backend adapters.
