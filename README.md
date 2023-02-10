@@ -14,7 +14,7 @@ The MSN is "ELETPUS".
 
 ## Installation
 
-It is recommended install this in a virtual environment.
+You can install the package from pypi. It is recommended to install in a virtual environment.
 
 ``` bash
 
