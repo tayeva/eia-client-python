@@ -14,9 +14,13 @@ The MSN is "ELETPUS".
 
 ## Installation
 
-TODO: add installation section
+It is recommended install this in a virtual environment.
 
-TODO: put package on pypi
+``` bash
+
+$ pip install eia-client
+
+```
 
 ## Example
 
