@@ -1,5 +1,4 @@
-"""
-"""
+"""EIA client parse module."""
 
 import logging
 
