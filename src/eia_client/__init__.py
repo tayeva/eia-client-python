@@ -1,7 +1,6 @@
 """EIA Open Data API Client Package."""
 
 __version__ = "0.1.0"
-__author__ = "tayeva"
 
 
 from eia_client import api_key
