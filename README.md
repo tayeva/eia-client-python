@@ -43,7 +43,7 @@ df = ec.parse.as_dataframe(resp)
 
 print(df.head())
 
-df.to_parquet("eia_data.parquet")
+df.to_csv("eia_data.csv")
 
 ```
 
