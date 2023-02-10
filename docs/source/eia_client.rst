@@ -4,14 +4,6 @@ eia\_client package
 Submodules
 ----------
 
-eia\_client.api\_endpoint module
---------------------------------
-
-.. automodule:: eia_client.api_endpoint
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 eia\_client.api\_key module
 ---------------------------
 
@@ -32,6 +24,14 @@ eia\_client.client module
 -------------------------
 
 .. automodule:: eia_client.client
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+eia\_client.endpoint module
+---------------------------
+
+.. automodule:: eia_client.endpoint
    :members:
    :undoc-members:
    :show-inheritance:
