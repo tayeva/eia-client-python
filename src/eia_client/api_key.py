@@ -55,7 +55,8 @@ class ApiKey:
     API Key dataclass.
 
     EIA requires an API key to be submitted with requests. This dataclass
-    is how that API key is represented in code.
+    is how that API key is represented in code. Available for import from
+    head of package.
 
     :param key: You EIA API key.
     """
