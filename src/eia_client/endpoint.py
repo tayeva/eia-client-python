@@ -61,7 +61,6 @@ class EndpointBuilder:
         :param msn: Mnemonic Series Names (MSN).
         :return: An ApiEndpoint dataclass.
         :rtype: ApiEndpoint.
-
         """
         # TODO: offset, length, and faces args
         msn = _clean_msn(msn)
