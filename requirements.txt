@@ -16,3 +16,4 @@ ipython
 jupyter
 matplotlib
 furo
+twine
