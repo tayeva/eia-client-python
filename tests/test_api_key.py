@@ -38,8 +38,8 @@ def test_load_api_from_file():
         assert key == true_api_key
 
 
-def test_load_api_key_key_in_env():
-    """"""
+def test_load_api_key_in_env():
+    """Test load api key when the key is an env variable."""
     os.environ["EIA_API_KEY"] = TEST_API_KEY
     key: api_key.ApiKey = api_key.load()
     assert key.key == TEST_API_KEY
