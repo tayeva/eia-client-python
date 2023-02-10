@@ -1,5 +1,5 @@
-eia-client-python
-=================
+EIA Open Data API Python Client
+===============================
 
 A python client ("eia_client") for `https://www.eia.gov <https://www.eia.gov>`_'s API.
 
