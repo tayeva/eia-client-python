@@ -57,9 +57,11 @@ class EndpointBuilder:
         :rtype: ApiEndpoint.
         """
         msn = msn.upper()
+        # TODO: check frequency to ensure it is properly formed
         endpoint = (f"/total-energy/data/?frequency={frequency}&data[0]=value&"
             F"facets[msn][]={msn}&sort[0][column]=period&sort[0]"
             "[direction]=desc&offset=0&length=5000")
+        # TODO: check start and end to ensure the properly formed
         if start:
             endpoint += f"&start={start}"
         if end:
