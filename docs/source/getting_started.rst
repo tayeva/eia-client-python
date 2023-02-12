@@ -25,7 +25,7 @@ Setup development environment
 
 Setup a development environment.
 
-- Python 3.6+
+- Python 3.7+
 
 Check python version.
 .. code-block:: console

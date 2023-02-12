@@ -4,8 +4,8 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 import logging
 
-from eia_client import client
 from eia_client import parse
+from eia_client.client import Client
 from eia_client.endpoint import EndpointBuilder
 import eia_client.api_key as ak
 
@@ -28,16 +28,25 @@ def _report_command(key: ak.ApiKey):
         report_to_run = "total_energy_monthly"
     LOGGER.info("Running report:%s", report_to_run)
     endpoint_builder = EndpointBuilder(key)
+    client = Client()
     if report_to_run == "total_energy_monthly":
-        msn = input("msn (default: ELETPUS):")
+        msn = input("msn (default: ELETPUS; optional):")
+        start = input("start (form: YYYY-MM; optional):")
+        end = input("end (form: YYYY-MM; optional):")
+        frequency = input("frequency (default: monthly; optional):")
+        if not frequency:
+            frequency = "monthly"
         if not msn:
             msn = "ELETPUS"
-        resp = client.get(endpoint_builder.total_energy_monthly(msn))
+        endpoint = endpoint_builder.total_energy(msn=msn, start=start,
+                                                 end=end, frequency=frequency)
+        resp = client.get(endpoint)
         tem_df = parse.as_dataframe(resp)
         if not tem_df.empty:
             output_directory = input("output directory (default='.')")
             if not output_directory or output_directory.endswith("/"):
                 output_directory = "."
+            # TODO: add output format option
             output_file_path = Path(f"{output_directory}/total_energy_monthly.parquet")
             tem_df.to_parquet(output_file_path)
             LOGGER.info("Shape:%s", tem_df.shape)
