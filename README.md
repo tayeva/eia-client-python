@@ -34,13 +34,12 @@ import eia_client as ec
 
 # Under the hood this reads your API key and builds it into the requests.
 builder = ec.EndpointBuilder()
+endpoint = builder.total_energy(msn="ELETPUS")
 
-endpoint = builder.total_energy_monthly(msn="ELETPUS")
-
-resp = ec.client.get(endpoint)
+client = ec.Client()
+resp = client.get(endpoint)
 
 df = ec.parse.as_dataframe(resp)
-
 print(df.head())
 
 df.to_csv("eia_data.csv")
@@ -64,10 +63,6 @@ variable called EIA_API_KEY.
 
 - Endpoint query functionality to allow the user to discover endpoints.
 
-- A proper client with session manager.
-
 - Walking endpoints without breaching rate limits.
-
-- Update EndpointBuilder to make requests with information in headers instead of full-endpoint (too long for some use cases).
 
 - Backend adapters.
