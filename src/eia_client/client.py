@@ -1,20 +1,19 @@
 """EIA client module."""
 
-import requests
-
+from requests import Session
 from eia_client.endpoint import Endpoint
 
 
-def get(endpoint: Endpoint, **kwargs) -> requests.Response:
+class Client:
     """
-    Issue a GET request to endpoint.
-    
-    :param endpoint: An Endpoint dataclass.
-    :return: A requests response object.
-    :rtype: requests.Response
+    EIA Client class.
     """
-    if kwargs.get("timeout") is None:
-        timeout = 60
-    else:
-        timeout = timeout.pop("timeout")
-    return requests.get(endpoint.endpoint, timeout=timeout, **kwargs)
+
+    def __init__(self, session=None):
+        if session is None:
+            session = Session()
+        self._session = session
+
+    def get(self, endpoint : Endpoint):
+        """EIA Client get endpoint."""
+        return self._session.get(endpoint.endpoint)
