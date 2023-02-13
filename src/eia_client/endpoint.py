@@ -1,12 +1,29 @@
 """A module for interacting with the EIA Open Data API."""
 
 from dataclasses import dataclass
+from abc import ABC, abstractmethod
 import logging
+from typing import Tuple
 
 import eia_client.api_key as ak
 
 
 LOGGER = logging.getLogger(__name__)
+
+
+@dataclass
+class EndpointParams:
+    """
+    API Endpoint params.
+    """
+    frequency: str
+    data: list
+    facets: dict
+    start: str
+    end: str
+    sort: list
+    offset: int
+    length: int
 
 
 @dataclass
@@ -19,7 +36,7 @@ class Endpoint:
     endpoint: str
 
 
-class EndpointBuilder:
+class EndpointBuilder(ABC):
     """
     A class for building EIA endpoints with API key.
     
@@ -31,18 +48,38 @@ class EndpointBuilder:
 
     """
 
-    _BASE = "https://api.eia.gov/v2"
+    BASE = "https://api.eia.gov/v2"
+    SORT = [{"column": "period", "direction": "desc"}]
 
     def __init__(self, api_key: ak.ApiKey = None) -> None:
-        self._api_key = ak.load() if api_key is None else api_key
+        self._api_key : ak.ApiKey = ak.load() if api_key is None else api_key
 
-    def _join(self, query: str) -> str:
+    def join(self, endpoint: Endpoint) -> Endpoint:
         """Join query to base and version to create fully formed endpoint."""
-        split = query.split("?")
-        return f"{self._BASE}{split[0]}?api_key={self._api_key.key}&{split[1]}"
+        endpoint.endpoint = f"{self.BASE}{endpoint.endpoint}/?api_key={self._api_key.key}"
+        return endpoint
 
-    def total_energy(self,  msn : str ="ELEPTUS", start : str = "", end : str = "",
-                     frequency : str = "monthly") -> Endpoint:
+    @abstractmethod
+    def build(self, frequency : str = "monthly", data : list = None,
+              facets : dict = None, start : str = None, end : str = None,
+              sort : list = None, offset : int = 0,
+              length : int = 5000) -> Tuple[Endpoint, EndpointParams]:
+        """Build the endpoint."""
+        params = EndpointParams(frequency=frequency, data=data, facets=facets,
+                                start=start, end=end, sort=sort, offset=offset, length=length)
+        return (self.join(Endpoint("")), params)
+
+
+
+class TotalEnergy(EndpointBuilder):
+    """Total Energy API endpoint."""
+
+    VALID_FREQUENCY = ("monthly", "annual",)
+
+    def build(self, frequency : str = "monthly", data : list = None,
+              facets : dict = None, start : str = None, end : str = None,
+              sort : list = None, offset : int = 0,
+              length : int = 5000) -> Tuple[Endpoint, EndpointParams]:
         """
         Total energy endpoint.
         
@@ -56,14 +93,28 @@ class EndpointBuilder:
         :return: An ApiEndpoint dataclass.
         :rtype: ApiEndpoint.
         """
-        msn = msn.upper()
-        # TODO: check frequency to ensure it is properly formed
-        endpoint = (f"/total-energy/data/?frequency={frequency}&data[0]=value&"
-            F"facets[msn][]={msn}&sort[0][column]=period&sort[0]"
-            "[direction]=desc&offset=0&length=5000")
-        # TODO: check start and end to ensure the properly formed
-        if start:
-            endpoint += f"&start={start}"
-        if end:
-            endpoint += f"&end={end}"
-        return Endpoint(self._join(endpoint))
+        endpoint = Endpoint("/total-energy/data")
+        endpoint.endpoint = self.join(endpoint)
+        facets = {} if facets is None else facets
+        sort = self.SORT if sort is None else sort
+        data =  ["value"] if data is None else data
+        params = EndpointParams(frequency=frequency, data=data,
+                                facets=facets, start=start, end=end,
+                                sort=self.SORT, offset=offset, length=length)
+        return (endpoint, params)
+
+
+class ElectricityRetailSales(EndpointBuilder):
+    """Electricity Retail sales endpoint."""
+
+    VALID_FREQUENCY = ("monthly", "annual",)
+    VALID_DATA = ("customers", "price", "revenue", "sales")
+
+    def build(self, frequency : str = "monthly", data : list = None,
+              facets : dict = None, start : str = None, end : str = None,
+              sort : list = None, offset : int = 0,
+              length : int = 5000) -> Tuple[Endpoint, EndpointParams]:
+        endpoint = Endpoint("/electricity/retail-sales")
+        # TOOD: this is where you left off
+        params = EndpointParams()
+        return (endpoint, params)
