@@ -23,7 +23,7 @@ def get_from_env() -> str:
 
     This function looks for the API key in the current environment
     variables as: "EIA_API_KEY"
-    
+
     :return: API key from environment variables.
     :rtype: str
     """
@@ -37,7 +37,7 @@ def get_from_env() -> str:
 def get_default_config_file_path() -> Path:
     """
     Get the default config file path.
-    
+
     This function retrieves the current home path and
     joins it with the default API key config file base name, which is
     ".eia.config" to return a path.
@@ -64,9 +64,9 @@ class ApiKey:
     key: str
 
 
-def read_config_file(file_path : Path) -> str:
+def read_config_file(file_path: Path) -> str:
     """Load api key from file (text file, utf-8).
-    
+
     :param file_path: The file path to the API key config file.
     :return:  API key as string if file exits otherwise an empty string.
     :rtype: str
@@ -109,9 +109,9 @@ def load(config_file_path: Path = None) -> ApiKey:
     return ApiKey(key=key)
 
 
-def write(file_path: Path, key : ApiKey) -> None:
+def write(file_path: Path, key: ApiKey) -> None:
     """Write api key.
-    
+
     :param file_path: The file path to write the API key.
     :param key: The API key to write to file
     """

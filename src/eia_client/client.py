@@ -22,6 +22,6 @@ class Client:
             session = Session()
         self._session = session
 
-    def get(self, endpoint : Endpoint):
+    def get(self, endpoint: Endpoint):
         """EIA Client get endpoint."""
         return self._session.get(endpoint.endpoint, headers=_headers(endpoint.params))

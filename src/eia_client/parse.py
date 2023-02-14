@@ -17,7 +17,7 @@ def as_dataframe(resp: Request) -> pd.DataFrame:
 
     :return: A pandas dataframe containing requested data.
     :rtype: pd.DataFrame
-    
+
     """
     if resp.status_code == 200:
         data = resp.json()

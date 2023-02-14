@@ -13,7 +13,7 @@ import eia_client.api_key as ak
 LOGGER = logging.getLogger(__name__)
 
 
-def _clean_command(command : str) -> str:
+def _clean_command(command: str) -> str:
     return command.lower()
 
 
@@ -38,8 +38,9 @@ def _report_command(key: ak.ApiKey):
             frequency = "monthly"
         if not msn:
             msn = "ELETPUS"
-        endpoint = endpoint_builder.total_energy(msn=msn, start=start,
-                                                 end=end, frequency=frequency)
+        endpoint = endpoint_builder.total_energy(
+            msn=msn, start=start, end=end, frequency=frequency
+        )
         resp = client.get(endpoint)
         tem_df = parse.as_dataframe(resp)
         if not tem_df.empty:
@@ -53,7 +54,7 @@ def _report_command(key: ak.ApiKey):
             LOGGER.info("Wrote:%s", output_file_path)
 
 
-def _process_args(args : ArgumentParser):
+def _process_args(args: ArgumentParser):
     """Process the cli command."""
     command = _clean_command(args.command)
     if command == "config":
@@ -65,10 +66,17 @@ def _process_args(args : ArgumentParser):
 
 def cli() -> ArgumentParser:
     """Command line interface."""
-    arg_parser = ArgumentParser(prog="EIA Client", description="A friendly HTTP client for EIA.",
-                                formatter_class=ArgumentDefaultsHelpFormatter)
-    arg_parser.add_argument("command", choices=("config", "report"), help="Command to run.")
-    arg_parser.add_argument("-k", "--api-key", default=None, help="Optional API key file path.")
+    arg_parser = ArgumentParser(
+        prog="EIA Client",
+        description="A friendly HTTP client for EIA.",
+        formatter_class=ArgumentDefaultsHelpFormatter,
+    )
+    arg_parser.add_argument(
+        "command", choices=("config", "report"), help="Command to run."
+    )
+    arg_parser.add_argument(
+        "-k", "--api-key", default=None, help="Optional API key file path."
+    )
     _process_args(arg_parser.parse_args())
 
 
