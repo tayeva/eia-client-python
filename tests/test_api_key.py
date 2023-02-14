@@ -34,7 +34,7 @@ def test_load_api_from_file():
         with open(test_config_fp, "w", encoding="utf-8") as file:
             true_api_key = "z8aTHIS1ndIS3rj1lAkfaTEST9asdfj"
             file.write(true_api_key)
-        key =  api_key.read_config_file(test_config_fp)
+        key = api_key.read_config_file(test_config_fp)
         assert key == true_api_key
 
 
