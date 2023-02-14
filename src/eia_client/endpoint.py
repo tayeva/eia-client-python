@@ -45,6 +45,13 @@ def _list_if_none(obj) -> list:
     return [] if obj is None else obj
 
 
+def join_api_key(endpoint: Endpoint, api_key: ak.ApiKey):
+    """Join an endpoint and API key (required for all requests to API)."""
+    endpoint.endpoint = f"{endpoint.endpoint}/?api_key={api_key.key}"
+    return endpoint
+
+
+
 class EndpointBuilder:
     """
     A class for building EIA endpoints with API key.
@@ -86,18 +93,6 @@ class EndpointBuilder:
         )
         self._endpoint = None
 
-    def _join_api_key_to_endpoint(self) -> None:
-        """
-        Join query to base and version to create fully formed endpoint.
-
-        All queries to the EIA API request an API. This method will join
-        the base endpoint and API key to endpoint of interest.
-
-
-        """
-        api_key = f"/?api_key={self._api_key.key}"
-        self._endpoint.endpoint = f"{self.BASE}{self._endpoint.endpoint}{api_key}"
-
     def set_params(
         self,
         frequency: str = "monthly",
@@ -126,8 +121,15 @@ class EndpointBuilder:
 
     def build(self) -> Endpoint:
         """Build the endpoint."""
-        self._endpoint = Endpoint(self.ENDPOINT, self._params)
-        self._join_api_key_to_endpoint()
+        endpoint_str = f"{self.BASE}{self.ENDPOINT}"
+        self._endpoint = Endpoint(endpoint_str, self._params)
+        return self._endpoint
+
+    @property
+    def endpoint(self):
+        """Get the built endpoint (won't rebuild if already built)."""
+        if self._endpoint is None:
+            self.build()
         return self._endpoint
 
 
