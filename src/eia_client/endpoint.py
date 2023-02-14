@@ -1,9 +1,7 @@
 """A module for interacting with the EIA Open Data API."""
 
 from dataclasses import dataclass
-from abc import ABC, abstractmethod
 import logging
-from typing import Tuple
 
 import eia_client.api_key as ak
 
@@ -34,9 +32,18 @@ class Endpoint:
     Methods from EndpointBuilder return Endpoint classes.
     """
     endpoint: str
+    params: EndpointParams
 
 
-class EndpointBuilder(ABC):
+def _list_if_str(obj) -> list:
+    return [obj] if isinstance(obj, str) else obj
+
+
+def _list_if_none(obj) -> list:
+    return [] if obj is None else obj
+
+
+class EndpointBuilder:
     """
     A class for building EIA endpoints with API key.
     
@@ -49,59 +56,69 @@ class EndpointBuilder(ABC):
     """
 
     BASE = "https://api.eia.gov/v2"
+    ENDPOINT = ""
     SORT = [{"column": "period", "direction": "desc"}]
 
-    def __init__(self, api_key: ak.ApiKey = None) -> None:
+    def __init__(self, api_key: ak.ApiKey = None,
+                 frequency : str = "monthly", data : list = None,
+                 facets : dict = None, start : str = None, end : str = None,
+                 sort : list = None, offset : int = 0, length : int = 5000) -> None:
         self._api_key : ak.ApiKey = ak.load() if api_key is None else api_key
+        self.set_params(frequency=frequency, data=data, facets=facets, 
+                        start=start, end=end, sort=sort, offset=offset, length=length)
+        self._endpoint = None
 
-    def join(self, endpoint: Endpoint) -> Endpoint:
-        """Join query to base and version to create fully formed endpoint."""
-        endpoint.endpoint = f"{self.BASE}{endpoint.endpoint}/?api_key={self._api_key.key}"
-        return endpoint
+    def _join_api_key_to_endpoint(self) -> None:
+        """
+        Join query to base and version to create fully formed endpoint.
 
-    @abstractmethod
-    def build(self, frequency : str = "monthly", data : list = None,
-              facets : dict = None, start : str = None, end : str = None,
-              sort : list = None, offset : int = 0,
-              length : int = 5000) -> Tuple[Endpoint, EndpointParams]:
+        All queries to the EIA API request an API. This method will join 
+        the base endpoint and API key to endpoint of interest.
+        
+        
+        """
+        api_key = f"/?api_key={self._api_key.key}"
+        self._endpoint.endpoint = f"{self.BASE}{self._endpoint.endpoint}{api_key}"
+
+    def set_params(self, frequency : str = "monthly", data : list = None,
+                   facets : dict = None, start : str = None, end : str = None,
+                   sort : list = None, offset : int = 0,
+                   length : int = 5000) -> EndpointParams:
+        """Set endpoint query parameters."""
+        data = [] if data is None else data
+        facets = {} if facets is None else facets
+        sort = self.SORT if sort is None else sort
+        self._params = EndpointParams(frequency=frequency, data=data,
+                                      facets=facets, start=start, end=end, sort=sort,
+                                      offset=offset, length=length)
+
+    def build(self) -> Endpoint:
         """Build the endpoint."""
-        params = EndpointParams(frequency=frequency, data=data, facets=facets,
-                                start=start, end=end, sort=sort, offset=offset, length=length)
-        return (self.join(Endpoint("")), params)
-
+        self._endpoint = Endpoint(self.ENDPOINT, self._params)
+        self._join_api_key_to_endpoint()
+        return self._endpoint
 
 
 class TotalEnergy(EndpointBuilder):
     """Total Energy API endpoint."""
 
     VALID_FREQUENCY = ("monthly", "annual",)
+    DEFAULT_MSN = "ELETPUS"
+    DATA = ["value"]
+    ENDPOINT = "/total-energy/data"
 
-    def build(self, frequency : str = "monthly", data : list = None,
-              facets : dict = None, start : str = None, end : str = None,
-              sort : list = None, offset : int = 0,
-              length : int = 5000) -> Tuple[Endpoint, EndpointParams]:
-        """
-        Total energy endpoint.
-        
-        Use the EIA API browser to find an msn:
-        https://www.eia.gov/opendata/browser/total-energy
+    def __init__(self, api_key: ak.ApiKey = None, 
+                 frequency : str = "monthly", msn : list = None,
+                 start : str = None, end : str = None,
+                 sort : list = None, offset : int = 0,
+                 length : int = 5000):
+        super().__init__(api_key, frequency=frequency, data=self.DATA,
+                         facets=self._facets(msn), start=start, end=end,
+                         sort=sort, offset=offset, length=length)
 
-        :param msn: Mnemonic Series Names (MSN).
-        :start: The start date of the series (YYYY-MM; optional)
-        :end: The end date of the series (YYYY-MM; optional)
-        :frequency: The frequency to the series (monthly or annual)
-        :return: An ApiEndpoint dataclass.
-        :rtype: ApiEndpoint.
-        """
-        endpoint = Endpoint("/total-energy/data")
-        endpoint.endpoint = self.join(endpoint)
-        facets = {} if facets is None else facets
-        sort = self.SORT if sort is None else sort
-        data =  ["value"] if data is None else data
-        params = EndpointParams(frequency=frequency, data=data,
-                                facets=facets, start=start, end=end,
-                                sort=self.SORT, offset=offset, length=length)
-        return (endpoint, params)
+    def _facets(self, msn: list = None):
+        msn = [self.DEFAULT_MSN] if msn is None else msn
+        return {"msn": msn}
 
 
 class ElectricityRetailSales(EndpointBuilder):
@@ -109,12 +126,36 @@ class ElectricityRetailSales(EndpointBuilder):
 
     VALID_FREQUENCY = ("monthly", "annual",)
     VALID_DATA = ("customers", "price", "revenue", "sales")
+    ENDPOINT = "/electricity/retail-sales/data"
 
-    def build(self, frequency : str = "monthly", data : list = None,
-              facets : dict = None, start : str = None, end : str = None,
-              sort : list = None, offset : int = 0,
-              length : int = 5000) -> Tuple[Endpoint, EndpointParams]:
-        endpoint = Endpoint("/electricity/retail-sales")
-        # TOOD: this is where you left off
-        params = EndpointParams()
-        return (endpoint, params)
+    def __init__(self, api_key: ak.ApiKey = None, 
+                 frequency : str = "monthly", state : list = None,
+                 sector : list = None, data : list = None,
+                 start : str = None, end : str = None,
+                 sort : list = None, offset : int = 0,
+                 length : int = 5000):
+        if frequency not in self.VALID_FREQUENCY:
+            raise RuntimeError(f"Invalid frequency argument:{frequency}")
+        super().__init__(api_key, frequency=frequency, data=self._data(data),
+                         facets=self._facets(state=state, sector=sector),
+                         start=start, end=end, sort=sort, offset=offset,
+                         length=length)
+
+    def _data(self, data: list = None) -> list:
+        data = _list_if_none(_list_if_str(data))
+        if any(d not in self.VALID_DATA for d in data):
+            raise RuntimeError("Invalid data argument")
+        if not data:
+            # You have to pass it at least one data series.
+            data = [self.VALID_DATA[0]]
+        return data
+
+    def _facets(self, state: list = None, sector: list = None) -> dict:
+        state = _list_if_none(_list_if_str(state))
+        sector = _list_if_none(_list_if_str(sector))
+        facets = {}
+        if state:
+            facets["stateid"] = state
+        if sector:
+            facets["sectorid"] = sector
+        return facets
