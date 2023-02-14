@@ -51,7 +51,6 @@ def join_api_key(endpoint: Endpoint, api_key: ak.ApiKey):
     return endpoint
 
 
-
 class EndpointBuilder:
     """
     A class for building EIA endpoints with API key.

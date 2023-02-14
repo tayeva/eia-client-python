@@ -22,7 +22,7 @@ def _config_command() -> ak.ApiKey:
     ak.write(ak.get_default_config_file_path(), ak.ApiKey(key))
 
 
-def _total_energy_monthly_report(client : Client, api_key: ak.ApiKey):
+def _total_energy_monthly_report(client: Client, api_key: ak.ApiKey):
     msn = input("msn (default: ELETPUS; optional):")
     start = input("start (form: YYYY-MM; optional):")
     end = input("end (form: YYYY-MM; optional):")
@@ -31,7 +31,9 @@ def _total_energy_monthly_report(client : Client, api_key: ak.ApiKey):
         frequency = "monthly"
     if not msn:
         msn = "ELETPUS"
-    endpoint = ec_endpoint.TotalEnergy(api_key=api_key, msn=msn, start=start, end=end, frequency=frequency)
+    endpoint = ec_endpoint.TotalEnergy(
+        api_key=api_key, msn=msn, start=start, end=end, frequency=frequency
+    )
     resp = client.get(endpoint.build())
     tem_df = parse.as_dataframe(resp)
     if not tem_df.empty:
@@ -45,7 +47,7 @@ def _total_energy_monthly_report(client : Client, api_key: ak.ApiKey):
         LOGGER.info("Wrote:%s", output_file_path)
 
 
-def _electricity_retail_sales(client : Client, api_key: ak.ApiKey):
+def _electricity_retail_sales(client: Client, api_key: ak.ApiKey):
     # TODO: feature: add electricity reatail sales report
     pass
 

@@ -18,7 +18,7 @@ class Client:
     EIA Client class.
     """
 
-    def __init__(self, session:Session=None, api_key: ak.ApiKey = None):
+    def __init__(self, session: Session = None, api_key: ak.ApiKey = None):
         self._session = Session() if session is None else session
         self._api_key = ak.load() if api_key is None else api_key
 
