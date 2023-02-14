@@ -21,11 +21,11 @@ def as_dataframe(resp: Request) -> pd.DataFrame:
     """
     if resp.status_code == 200:
         data = resp.json()
-        data_resp = data["response"]
+        data_resp = data.get("response", {})
         resp_warning = data_resp.get("warning")
         if resp_warning:
             LOGGER.warning(resp_warning)
-        data_df = pd.DataFrame(data_resp["data"])
+        data_df = pd.DataFrame(data_resp.get("data", []))
     else:
         data_df = pd.DataFrame()
         LOGGER.warning("status:%s", resp.status_code)
