@@ -11,7 +11,7 @@ from eia_client.api_key import ApiKey
 def test_total_energy_endpoint():
     """Test the total energy endpoint with no arguments"""
     endpoint = TotalEnergy(api_key=ApiKey("TEST")).build()
-    true_endpoint = "https://api.eia.gov/v2/total-energy/data/?api_key=TEST"
+    true_endpoint = "https://api.eia.gov/v2/total-energy/data"
     assert endpoint.endpoint == true_endpoint
 
 
