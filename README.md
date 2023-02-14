@@ -33,11 +33,10 @@ endpoint.
 import eia_client as ec
 
 # Under the hood this reads your API key and builds it into the requests.
-builder = ec.EndpointBuilder()
-endpoint = builder.total_energy(msn="ELETPUS")
+endpoint = ec.endpoint.TotalEnergy(msn="ELETPUS")
 
 client = ec.Client()
-resp = client.get(endpoint)
+resp = client.get(endpoint.build())
 
 df = ec.parse.as_dataframe(resp)
 print(df.head())
