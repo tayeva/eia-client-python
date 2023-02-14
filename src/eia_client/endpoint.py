@@ -166,6 +166,7 @@ class TotalEnergy(EndpointBuilder):
         )
 
     def _facets(self, msn: list = None):
+        msn = [msn] if isinstance(msn, str) else msn
         msn = [self.DEFAULT_MSN] if msn is None else msn
         return {"msn": msn}
 
