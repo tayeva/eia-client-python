@@ -5,7 +5,7 @@ import eia_client as ec
 
 def main():
     """Example total energy endpoint."""
-    endpoint = ec.endpoint.TotalEnergy()
+    endpoint = ec.endpoint.TotalEnergy(msn="ELETPUS")
     client = ec.Client()
     resp = client.get(endpoint.build())
     df = ec.parse.as_dataframe(resp)
