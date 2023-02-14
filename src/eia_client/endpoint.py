@@ -119,9 +119,10 @@ class EndpointBuilder:
             length=length,
         )
 
-    def build(self) -> Endpoint:
+    def build(self, **kwargs) -> Endpoint:
         """Build the endpoint."""
         endpoint_str = f"{self.BASE}{self.ENDPOINT}"
+        # TODO: feature: ability to update params via kwargs and rebuild
         self._endpoint = Endpoint(endpoint_str, self._params)
         return self._endpoint
 
