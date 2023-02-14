@@ -29,4 +29,5 @@ def as_dataframe(resp: Request) -> pd.DataFrame:
     else:
         data_df = pd.DataFrame()
         LOGGER.warning("status:%s", resp.status_code)
+        LOGGER.warning("reason:%s", resp.reason)
     return data_df
