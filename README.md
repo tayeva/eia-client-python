@@ -57,3 +57,9 @@ variable called EIA_API_KEY.
 - Walking endpoints without breaching rate limits.
 
 - Backend adapters.
+
+- Publish sphinx docs.
+
+- Add more endpoints.
+
+- Github workflow.
