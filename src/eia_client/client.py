@@ -6,7 +6,7 @@ import json
 from requests import Session
 
 from eia_client import api_key as ak
-from eia_client.endpoint import Endpoint, EndpointParams, join_api_key
+from eia_client.endpoint.builder import Endpoint, EndpointParams, join_api_key
 
 
 def _headers(params: EndpointParams) -> dict:
