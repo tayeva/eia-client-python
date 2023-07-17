@@ -25,7 +25,8 @@ def _config_command() -> None:
     ak.write(ak.get_default_config_file_path(), ak.ApiKey(key))
 
 
-def _total_energy_monthly_report(client: Client, api_key: ak.ApiKey):
+
+def _total_energy_monthly_report(client: Client, api_key: ak.ApiKey, args: Namespace):
     msn = input("msn (default: ELETPUS; optional):")
     start = input("start (form: YYYY-MM; optional):")
     end = input("end (form: YYYY-MM; optional):")
