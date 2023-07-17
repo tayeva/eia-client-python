@@ -17,8 +17,11 @@ def _clean_command(command: str) -> str:
     return command.lower()
 
 
-def _config_command() -> ak.ApiKey:
-    key = input("API Key:")
+def _config_command() -> None:
+    try:
+        key = input("API Key:")
+    except KeyboardInterrupt:
+        return None
     ak.write(ak.get_default_config_file_path(), ak.ApiKey(key))
 
 
