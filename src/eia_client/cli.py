@@ -1,8 +1,10 @@
 """Command line interface"""
 
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter, Namespace
 from pathlib import Path
 import logging
+
+import pandas as pd
 
 from eia_client import parse
 from eia_client.client import Client
@@ -25,6 +27,32 @@ def _config_command() -> None:
     ak.write(ak.get_default_config_file_path(), ak.ApiKey(key))
 
 
+def _dataframe_writer(df: pd.DataFrame, args: Namespace, report_name: str) -> None:
+    if df.empty:
+        LOGGER.warning("Dataframe is empty. No data to write.")
+        return None
+    if args.output_directory is None:
+        output_directory = input("output directory (default='./')")
+        if not output_directory:
+            output_directory = "./"
+    else:
+        output_directory = args.output_directory
+    output_directory = Path(output_directory)
+    if not output_directory.exists():
+        LOGGER.info("Created directory:%s", output_directory)
+        output_directory.mkdir(parents=True)
+    if args.output_format == "parquet":
+        file_ext = ".parquet"
+    else:
+        file_ext = ".csv"
+    output_file_path = output_directory.joinpath(f"{report_name}{file_ext}")
+    if file_ext == ".parquet":
+        df.to_parquet(output_file_path)
+    else:
+        df.to_csv(output_file_path)
+    LOGGER.info("Shape:%s", df.shape)
+    LOGGER.info("Wrote:%s", output_file_path)
+
 
 def _total_energy_monthly_report(client: Client, api_key: ak.ApiKey, args: Namespace):
     msn = input("msn (default: ELETPUS; optional):")
@@ -44,15 +72,7 @@ def _total_energy_monthly_report(client: Client, api_key: ak.ApiKey, args: Names
     )
     resp = client.get(endpoint.build())
     tem_df = parse.as_dataframe(resp)
-    if not tem_df.empty:
-        output_directory = input("output directory (default='.')")
-        if not output_directory or output_directory.endswith("/"):
-            output_directory = "."
-        # TODO: add output format option
-        output_file_path = Path(f"{output_directory}/total_energy_monthly.parquet")
-        tem_df.to_parquet(output_file_path)
-        LOGGER.info("Shape:%s", tem_df.shape)
-        LOGGER.info("Wrote:%s", output_file_path)
+    _dataframe_writer(tem_df, args, report_name="total_energy_monthly")
 
 
 def _electricity_retail_sales(client: Client, api_key: ak.ApiKey):
