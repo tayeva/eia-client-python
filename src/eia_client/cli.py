@@ -55,14 +55,14 @@ def _electricity_retail_sales(client: Client, api_key: ak.ApiKey):
     pass
 
 
-def _report_command(api_key: ak.ApiKey):
+def _report_command(api_key: ak.ApiKey, args: Namespace):
     report_to_run = input("Report (default: total_energy_monthly):")
     if not report_to_run:
         report_to_run = "total_energy_monthly"
     LOGGER.info("Running report:%s", report_to_run)
     client = Client()
     if report_to_run == "total_energy_monthly":
-        _total_energy_monthly_report(client, api_key)
+        _total_energy_monthly_report(client, api_key, args)
     elif report_to_run == "electricity-retail-sales":
         _electricity_retail_sales(client, api_key)
 
@@ -74,7 +74,7 @@ def _process_args(args: ArgumentParser):
         _config_command()
     api_key = ak.load(config_file_path=args.api_key)
     if command == "report":
-        _report_command(api_key)
+        _report_command(api_key, args)
 
 
 def cli() -> None:
