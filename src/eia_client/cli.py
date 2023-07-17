@@ -90,7 +90,12 @@ def cli() -> Namespace:
     arg_parser.add_argument(
         "-k", "--api-key", default=None, help="Optional API key file path."
     )
-    return _process_args(arg_parser.parse_args())
+    arg_parser.add_argument(
+        "--output-format",
+        choices=("csv", "parquet"),
+        default="parquet",
+        help="Output format.",
+    )
 
 
 def main():
