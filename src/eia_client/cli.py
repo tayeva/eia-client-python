@@ -77,7 +77,7 @@ def _process_args(args: ArgumentParser):
         _report_command(api_key)
 
 
-def cli() -> Namespace:
+def cli() -> None:
     """Command line interface."""
     arg_parser = ArgumentParser(
         prog="EIA Client",
@@ -99,6 +99,7 @@ def cli() -> Namespace:
     arg_parser.add_argument(
         "--output-directory", default=None, help="Output directory."
     )
+    _process_args(arg_parser.parse_args())
 
 
 def main():
