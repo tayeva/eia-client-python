@@ -96,6 +96,9 @@ def cli() -> Namespace:
         default="parquet",
         help="Output format.",
     )
+    arg_parser.add_argument(
+        "--output-directory", default=None, help="Output directory."
+    )
 
 
 def main():
