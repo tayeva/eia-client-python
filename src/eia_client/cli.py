@@ -77,7 +77,7 @@ def _process_args(args: ArgumentParser):
         _report_command(api_key)
 
 
-def cli() -> ArgumentParser:
+def cli() -> Namespace:
     """Command line interface."""
     arg_parser = ArgumentParser(
         prog="EIA Client",
@@ -90,7 +90,7 @@ def cli() -> ArgumentParser:
     arg_parser.add_argument(
         "-k", "--api-key", default=None, help="Optional API key file path."
     )
-    _process_args(arg_parser.parse_args())
+    return _process_args(arg_parser.parse_args())
 
 
 def main():
