@@ -30,6 +30,10 @@ def _total_energy_monthly_report(client: Client, api_key: ak.ApiKey):
     start = input("start (form: YYYY-MM; optional):")
     end = input("end (form: YYYY-MM; optional):")
     frequency = input("frequency (default: monthly; optional):")
+    if not start:
+        start = None
+    if not end:
+        end = None
     if not frequency:
         frequency = "monthly"
     if not msn:
