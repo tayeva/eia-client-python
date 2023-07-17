@@ -1,5 +1,6 @@
 #eia-client-python
 *.parquet
+*.csv
 
 # editors
 .vscode/
