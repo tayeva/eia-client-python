@@ -77,7 +77,7 @@ def _total_energy_monthly_report(client: Client, api_key: ak.ApiKey, args: Names
 
 def _electricity_retail_sales(client: Client, api_key: ak.ApiKey):
     # TODO: feature: add electricity reatail sales report
-    pass
+    LOGGER.warning("Electricity sales not yet implemented.")
 
 
 def _report_command(api_key: ak.ApiKey, args: Namespace):
